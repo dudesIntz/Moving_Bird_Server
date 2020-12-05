@@ -3,108 +3,149 @@ const validator = require('validator')
 const { check } = require('express-validator')
 
 /**
- * Validates timesheet data request
+ * Validates create new item request
  */
-exports.Timesheet = [
-  check('task_id')
+exports.createItem = [
+  check('name')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  check('email')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isEmail()
+    .withMessage('EMAIL_IS_NOT_VALID'),
+  check('gender')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isIn(['male', 'female', 'transgender'])
+    .withMessage('NOT_A_VALID_GENDER'),
+  check('password')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isLength({
+      min: 5
+    })
+    .withMessage('PASSWORD_TOO_SHORT_MIN_5'),
+  check('role')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isIn(['user', 'admin'])
+    .withMessage('USER_NOT_IN_KNOWN_ROLE'),
+  check('phone')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
     .trim(),
-  check('task')
+  check('city')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
     .trim(),
-  check('date')
+  check('country')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
     .trim(),
-  check('timespend.hours')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .custom(v => !(v > 24))
-    .withMessage('NOT_VALID_TIME')
-    .trim(),
-  check('timespend.minutes')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .custom(v => !(v > 60))
-    .withMessage('NOT_VALID_TIME')
-    .trim(),
-  check('project')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-  check('taskdetails').optional(),
+  check('urlTwitter')
+    .optional()
+    .custom(v => (v === '' ? true : validator.isURL(v)))
+    .withMessage('NOT_A_VALID_URL'),
+  check('urlGitHub')
+    .optional()
+    .custom(v => (v === '' ? true : validator.isURL(v)))
+    .withMessage('NOT_A_VALID_URL'),
   (req, res, next) => {
     validationResult(req, res, next)
   }
 ]
 
 /**
- * Validates timesheet data for update request
+ * Validates update item request
  */
 exports.updateItem = [
-  check('task_id')
+  check('name')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  check('email')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  check('role')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  check('phone')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
     .trim(),
-  check('task')
+  check('city')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
     .trim(),
-  check('date')
+  check('country')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
     .trim(),
-  check('timespend.hours')
+  check('urlTwitter')
+    .optional()
+    .custom(v => (v === '' ? true : validator.isURL(v)))
+    .withMessage('NOT_A_VALID_URL'),
+  check('urlGitHub')
+    .optional()
+    .custom(v => (v === '' ? true : validator.isURL(v)))
+    .withMessage('NOT_A_VALID_URL'),
+  check('id')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-  check('timespend.minutes')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-  check('project')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-  check('taskdetails').optional(),
+    .withMessage('IS_EMPTY'),
+  (req, res, next) => {
+    validationResult(req, res, next)
+  }
+]
+
+/**
+ * Validates get item request
+ */
+exports.getItem = [
   check('id')
     .exists()
     .withMessage('MISSING')
@@ -126,53 +167,6 @@ exports.deleteItem = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  (req, res, next) => {
-    validationResult(req, res, next)
-  }
-]
-
-/**
- * Validates delete item request
- */
-exports.getChart = [
-  check('id')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  (req, res, next) => {
-    validationResult(req, res, next)
-  }
-]
-
-/**
- * Validates timesheet data for export excel
- */
-exports.exportExcel = [
-  check('task_id')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-
-  check('startdate')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-  check('enddate')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .trim(),
-
   (req, res, next) => {
     validationResult(req, res, next)
   }

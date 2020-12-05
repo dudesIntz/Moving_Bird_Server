@@ -1,11 +1,14 @@
-const model = require('../models/project')
+
+
+
+const model = require('../models/user')
 const uuid = require('uuid')
 const { matchedData } = require('express-validator')
 const utils = require('../middleware/utils')
 const db = require('../middleware/db')
-const mongoose = require('mongoose')
-
-const list = ['Holiday', 'Leave', 'Sample', 'Learning']
+const emailer = require('../middleware/emailer')
+const birthdayAggregation = require('../aggregations/birthday')
+const userAggregation = require('../aggregations/user')
 /*********************
  * Private functions *
  *********************/
@@ -15,38 +18,35 @@ const list = ['Holiday', 'Leave', 'Sample', 'Learning']
  * @param {Object} req - request object
  */
 const createItem = async req => {
-  console.log(req)
   return new Promise((resolve, reject) => {
-    const project = new model({
-      projectName: req.projectName,
-      members: req.members,
-      client: req.client,
+    const user = new model({
+      name: req.name,
+      email: req.email,
+      password: req.password,
       role: req.role,
-      owner: req.owner
+      phone: req.phone,
+      city: req.city,
+      country: req.country,
+      //  avatar: req.avatar,
+      verification: uuid.v4()
     })
 
-    project.save((err, item) => {
-      console.log(err, item)
+    user.save((err, item) => {
       if (err) {
         reject(utils.buildErrObject(422, err.message))
       }
-
-      resolve(item.toObject())
+      // Removes properties with rest operator
+      const removeProperties = ({
+        // eslint-disable-next-line no-unused-vars
+        password,
+        // eslint-disable-next-line no-unused-vars
+        blockExpires,
+        // eslint-disable-next-line no-unused-vars
+        loginAttempts,
+        ...rest
+      }) => rest
+      resolve(removeProperties(item.toObject()))
     })
-  })
-}
-
-const projectExists = async projectName => {
-  return new Promise((resolve, reject) => {
-    model.findOne(
-      {
-        projectName
-      },
-      (err, item) => {
-        utils.itemAlreadyExists(err, item, reject, 'PROJECT_ALREADY_EXISTS')
-        resolve(false)
-      }
-    )
   })
 }
 
@@ -62,7 +62,7 @@ const projectExists = async projectName => {
 exports.getItems = async (req, res) => {
   try {
     const query = await db.checkQueryString(req.query)
-    res.status(200).json(await db.getItems(req, model, query))
+    res.status(200).json(await model.questions.aggregate([{$sample: {size: 10}}]))
   } catch (error) {
     utils.handleError(res, error)
   }
@@ -77,7 +77,9 @@ exports.getBirthdayItems = async (req, res) => {
   try {
     res
       .status(200)
-      .json(await db.aggregate(aggregate.birthdayAggregation(), model))
+      .json(
+        await db.aggregate(birthdayAggregation.birthdayAggregation(), model)
+      )
   } catch (error) {
     utils.handleError(res, error)
   }
@@ -92,7 +94,9 @@ exports.getCurrentMonthBirthdayItems = async (req, res) => {
   try {
     res
       .status(200)
-      .json(await db.aggregate(aggregate.currentMonthBirthDay(), model))
+      .json(
+        await db.aggregate(birthdayAggregation.currentMonthBirthDay(), model)
+      )
   } catch (error) {
     utils.handleError(res, error)
   }
@@ -114,24 +118,6 @@ exports.getItem = async (req, res) => {
 }
 
 /**
- * Get item function called by route
- * @param {Object} req - request object
- * @param {Object} res - response object
- */
-exports.getProjectList = async (req, res) => {
-  try {
-    req = matchedData(req)
-    const id = await utils.isIDGood(req.id)
-    const query = { 'members._id': mongoose.Types.ObjectId(id) }
-    const item = await db.find(query, model)
-    const projectList = [...list, ...item.map(val => val.projectName)]
-    res.status(200).json(projectList)
-  } catch (error) {
-    utils.handleError(res, error)
-  }
-}
-
-/**
  * Update item function called by route
  * @param {Object} req - request object
  * @param {Object} res - response object
@@ -139,8 +125,14 @@ exports.getProjectList = async (req, res) => {
 exports.updateItem = async (req, res) => {
   try {
     req = matchedData(req)
-    const id = await utils.isIDGood(req._id)
-    res.status(200).json(await db.updateItem(id, model, req))
+    const id = await utils.isIDGood(req.id)
+    const doesEmailExists = await emailer.emailExistsExcludingMyself(
+      id,
+      req.email
+    )
+    if (!doesEmailExists) {
+      res.status(200).json(await db.updateItem(id, model, req))
+    }
   } catch (error) {
     utils.handleError(res, error)
   }
@@ -153,11 +145,13 @@ exports.updateItem = async (req, res) => {
  */
 exports.createItem = async (req, res) => {
   try {
+    // Gets locale from header 'Accept-Language'
+    const locale = req.getLocale()
     req = matchedData(req)
-
-    const isProjectExists = await projectExists(req.projectName)
-    if (!isProjectExists) {
+    const doesEmailExists = await emailer.emailExists(req.email)
+    if (!doesEmailExists) {
       const item = await createItem(req)
+      emailer.sendRegistrationEmailMessage(locale, item)
       res.status(201).json(item)
     }
   } catch (error) {
