@@ -1,8 +1,7 @@
-const model = require('../models/questions')
+const model = require('../models/scores')
 const { matchedData } = require('express-validator')
 const utils = require('../middleware/utils')
 const db = require('../middleware/db')
-const questionAggregation = require('../aggregations/questions')
 /*********************
  * Private functions *
  *********************/
@@ -14,12 +13,8 @@ const questionAggregation = require('../aggregations/questions')
 const createItem = async req => {
   return new Promise((resolve, reject) => {
     const user = new model({
-      question: req.question,
-      answer: req.answer,
-      questionType: req.questionType,
-      optionType: req.optionType,
-      options: req.options,
-      keywords: req.keywords
+      score: req.score,
+      user: req.user
     })
 
     user.save((err, item) => {
@@ -45,21 +40,6 @@ exports.getItems = async (req, res) => {
   try {
     const query = await db.checkQueryString(req.query)
     res.status(200).json(await db.getItems(req, model))
-  } catch (error) {
-    utils.handleError(res, error)
-  }
-}
-
-/**
- * Get items function called by route
- * @param {Object} req - request object
- * @param {Object} res - response object
- */
-exports.getRandomItems = async (req, res) => {
-  try {
-    res
-      .status(200)
-      .json(await model.aggregate(questionAggregation.getRandomQuestions(10)))
   } catch (error) {
     utils.handleError(res, error)
   }

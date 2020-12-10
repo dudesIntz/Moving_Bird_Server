@@ -1,7 +1,7 @@
 {
-  "name": "node-express-mongodb-jwt-rest-api-admin-panel",
+  "name": "question-app-server",
   "version": "7.1.2",
-  "description": "Node.js admin application",
+  "description": "e learning server application",
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=production pm2 start server.js",

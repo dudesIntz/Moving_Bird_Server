@@ -1,4 +1,4 @@
-const controller = require('../controllers/questions')
+const controller = require('../controllers/scores')
 const validate = require('../controllers/questions.validate')
 const AuthController = require('../controllers/auth')
 const express = require('express')
@@ -24,17 +24,6 @@ router.get(
   // AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   controller.getItems
-)
-
-/*
- * Get items route
- */
-router.get(
-  '/random',
-  // requireAuth,
-  // AuthController.roleAuthorization(['admin']),
-  trimRequest.all,
-  controller.getRandomItems
 )
 
 /*

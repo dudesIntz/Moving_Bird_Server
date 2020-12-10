@@ -24,20 +24,12 @@ exports.createItem = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('optionType')
+  check('answerType')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('options')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isArray()
-    .withMessage('MUST_BE_AN_ARRAY'),
   check('role')
     .exists()
     .withMessage('MISSING')
@@ -48,6 +40,8 @@ exports.createItem = [
     .withMessage('USER_NOT_IN_KNOWN_ROLE'),
   check('keywords')
     .optional()
+    .isArray()
+    .withMessage('MUST_BE_AN_ARRAY')
     .trim(),
   (req, res, next) => {
     validationResult(req, res, next)
@@ -76,20 +70,12 @@ exports.updateItem = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('optionType')
+  check('answerType')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('options')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isArray()
-    .withMessage('MUST_BE_AN_ARRAY'),
   check('role')
     .exists()
     .withMessage('MISSING')
@@ -100,6 +86,8 @@ exports.updateItem = [
     .withMessage('USER_NOT_IN_KNOWN_ROLE'),
   check('keywords')
     .optional()
+    .isArray()
+    .withMessage('MUST_BE_AN_ARRAY')
     .trim(),
   (req, res, next) => {
     validationResult(req, res, next)
