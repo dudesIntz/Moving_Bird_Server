@@ -22,8 +22,6 @@ const createItem = async req => {
       password: req.password,
       role: req.role,
       phone: req.phone,
-      city: req.city,
-      country: req.country,
       //  avatar: req.avatar,
       verification: uuid.v4()
     })

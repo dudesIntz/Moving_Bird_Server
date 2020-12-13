@@ -478,8 +478,7 @@ exports.register = async (req, res) => {
     const locale = req.getLocale()
     req = matchedData(req, { includeOptionals: true })
     const doesEmailExists = await emailer.emailExists(req.email)
-    const empIdExists = await db.empIdExists(req.empId)
-    if (!doesEmailExists && !empIdExists) {
+    if (!doesEmailExists) {
       const img = await bufferImage()
       const buffer = await sharp(img)
         .resize({ width: 200, height: 200 })

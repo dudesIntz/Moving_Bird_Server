@@ -6,43 +6,18 @@ const { check } = require('express-validator')
  * Validates create new item request
  */
 exports.createItem = [
-  check('question')
+  check('_id')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('answer')
+  check('questions')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('questionType')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('answerType')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('role')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isIn(['user', 'admin'])
-    .withMessage('USER_NOT_IN_KNOWN_ROLE'),
-  check('keywords')
-    .optional()
-    .isArray()
-    .withMessage('MUST_BE_AN_ARRAY')
-    .trim(),
   (req, res, next) => {
     validationResult(req, res, next)
   }
@@ -52,44 +27,19 @@ exports.createItem = [
  * Validates update item request
  */
 exports.updateItem = [
-  check('question')
+   check('_id')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('answer')
+  check('questions')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('questionType')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('answerType')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('role')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isIn(['user', 'admin'])
-    .withMessage('USER_NOT_IN_KNOWN_ROLE'),
-  check('keywords')
-    .optional()
-    .isArray()
-    .withMessage('MUST_BE_AN_ARRAY')
-    .trim(),
-  (req, res, next) => {
+ (req, res, next) => {
     validationResult(req, res, next)
   }
 ]

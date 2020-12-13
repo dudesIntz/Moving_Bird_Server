@@ -124,6 +124,28 @@ exports.getItem = [
 /**
  * Validates delete item request
  */
+exports.validateItems = [
+  check('questions')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+    check('questions.*._id').exists().not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+    check('questions.*.answer').exists().not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  (req, res, next) => {
+    validationResult(req, res, next)
+  }
+]
+
+
+/**
+ * Validates delete item request
+ */
 exports.deleteItem = [
   check('id')
     .exists()

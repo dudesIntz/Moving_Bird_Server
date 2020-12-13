@@ -2,14 +2,7 @@ const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 const ResultSchema = new mongoose.Schema(
   {
-    score: {
-      type: String,
-      required: true
-    },
-    user: {
-      required: true,
-      type: mongoose.Types.ObjectId
-    }
+    attempts: {type:Array, default:[]}
   },
   {
     versionKey: false,

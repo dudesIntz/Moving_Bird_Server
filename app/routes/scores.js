@@ -1,5 +1,5 @@
 const controller = require('../controllers/scores')
-const validate = require('../controllers/questions.validate')
+const validate = require('../controllers/scores.validate')
 const AuthController = require('../controllers/auth')
 const express = require('express')
 const router = express.Router()
@@ -30,12 +30,12 @@ router.get(
  * Create new item route
  */
 router.post(
-  '/',
-  // requireAuth,
+  '/addScore',
+   requireAuth,
   // AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   validate.createItem,
-  controller.createItem
+  controller.addOrUpdate
 )
 
 /*

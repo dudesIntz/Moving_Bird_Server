@@ -19,14 +19,6 @@ const UserSchema = new mongoose.Schema(
     address: {
       type: String
     },
-    empId: {
-      type: Number,
-      required: true,
-      validate: {
-        validator: v => validator.isNumeric(v.toString()),
-        message: 'EMP_ID_NOT_VALID'
-      }
-    },
     email: {
       type: String,
       validate: {
@@ -36,17 +28,6 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
       required: true
-    },
-    gender: {
-      type: String,
-      required: true,
-      validate: {
-        validator(v) {
-          return validator.isIn(v, ['male', 'female', 'transgender'])
-        },
-        message: 'NOT_A_VALID_GENDER'
-      },
-      lowercase: true
     },
     password: {
       type: String,

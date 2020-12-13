@@ -31,7 +31,7 @@ router.get(
  */
 router.get(
   '/random',
-  // requireAuth,
+   requireAuth,
   // AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   controller.getRandomItems
@@ -47,6 +47,17 @@ router.post(
   trimRequest.all,
   validate.createItem,
   controller.createItem
+)
+/*
+ * Create new item route
+ */
+router.post(
+  '/validateItems',
+  // requireAuth,
+  // AuthController.roleAuthorization(['admin']),
+  trimRequest.all,
+  validate.validateItems,
+  controller.validateItems
 )
 
 /*

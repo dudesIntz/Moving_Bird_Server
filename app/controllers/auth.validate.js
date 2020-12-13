@@ -33,17 +33,6 @@ exports.register = [
     .optional()
     .isMobilePhone()
     .withMessage('NOT_A_VALID_MOBILE_NUMBER'),
-  check('gender')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isIn(['male', 'female', 'transgender'])
-    .withMessage('NOT_A_VALID_GENDER'),
-  check('empId')
-    .isNumeric()
-    .withMessage('NOT_A_VALID_EMP_ID'),
   check('dob')
     .optional()
     .isBefore(

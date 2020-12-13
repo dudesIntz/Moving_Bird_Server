@@ -43,6 +43,7 @@ const createItem = async req => {
  */
 exports.getItems = async (req, res) => {
   try {
+    
     const query = await db.checkQueryString(req.query)
     res.status(200).json(await db.getItems(req, model))
   } catch (error) {
@@ -57,6 +58,7 @@ exports.getItems = async (req, res) => {
  */
 exports.getRandomItems = async (req, res) => {
   try {
+    console.log(req)
     res
       .status(200)
       .json(await model.aggregate(questionAggregation.getRandomQuestions(10)))
@@ -70,6 +72,24 @@ exports.getItem = async (req, res) => {
     req = matchedData(req)
     const id = await utils.isIDGood(req.id)
     res.status(200).json(await db.getItem(id, model))
+  } catch (error) {
+    utils.handleError(res, error)
+  }
+}
+
+
+exports.validateItems = async (req, res) => {
+  try {
+    req = matchedData(req)
+    const _ids = req.questions.map(val=>val._id)
+    const data = model.find({_id:_ids})
+    req.questions.forEach(val=>{
+      const db_question = data.find(val=>val._id)
+      if(db_question.answer === val.answer){
+        val.isCorrectAnswer = true;
+      }
+    })
+    res.status(200).json(req.question)
   } catch (error) {
     utils.handleError(res, error)
   }

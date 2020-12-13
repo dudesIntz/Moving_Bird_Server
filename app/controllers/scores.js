@@ -13,8 +13,8 @@ const db = require('../middleware/db')
 const createItem = async req => {
   return new Promise((resolve, reject) => {
     const user = new model({
-      score: req.score,
-      user: req.user
+      _id:req.id,
+      attempts: [req.questions],
     })
 
     user.save((err, item) => {
@@ -80,6 +80,34 @@ exports.createItem = async (req, res) => {
     req = matchedData(req)
     const item = await createItem(req)
     res.status(201).json(item)
+  } catch (error) {
+    utils.handleError(res, error)
+  }
+}
+
+
+/**
+ * Create item function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
+exports.addOrUpdate = async (req, res) => {
+  try {
+    const id = await utils.isIDGood(req.user._id)
+    console.log(req.user)
+    req = matchedData(req)
+    
+    const isFound = await model.find({_id:id})
+    let item;
+    console.log(isFound)
+    if(isFound.length){
+     item = await model.updateOne({_id:id},{$push:{attempts:req.questions}})
+    }else{
+      req.id = id;
+      item = await createItem(req)
+    }
+     
+    res.status(201).json({msg:"Added or Updated Successfully"})
   } catch (error) {
     utils.handleError(res, error)
   }
