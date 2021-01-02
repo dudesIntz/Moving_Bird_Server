@@ -21,6 +21,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.9.0",
     "dotenv-safe": "^8.2.0",
     "ejs": "^3.0.1",
@@ -52,7 +53,6 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
     "eslint-config-formidable": "^4.0.0",
     "eslint-config-prettier": "^6.9.0",
