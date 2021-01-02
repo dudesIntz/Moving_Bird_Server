@@ -11,7 +11,7 @@ const questions = [
     updatedAt: faker.date.recent()
   },
   {
-    keywords: ["generic"],
+    keywords: ["generic", "social"],
     question: "What is the capital of India",
     questionType:"FIB",
     optionType:"URL",
@@ -19,6 +19,7 @@ const questions = [
     createdAt: faker.date.past(),
     updatedAt: faker.date.recent()
   },
+  
   
 ]
 

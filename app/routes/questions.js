@@ -20,10 +20,21 @@ const trimRequest = require('trim-request')
  */
 router.get(
   '/',
-  // requireAuth,
+  requireAuth,
   // AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   controller.getItems
+)
+
+/*
+ * Get question type route
+ */
+router.get(
+  '/types',
+  requireAuth,
+  // AuthController.roleAuthorization(['admin']),
+  trimRequest.all,
+  controller.getQuestionTypes
 )
 
 /*
@@ -31,7 +42,7 @@ router.get(
  */
 router.get(
   '/random',
-   requireAuth,
+  requireAuth,
   // AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   controller.getRandomItems
@@ -77,7 +88,7 @@ router.get(
  */
 router.patch(
   '/:id',
-  //requireAuth,
+  requireAuth,
   AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   validate.updateItem,
@@ -89,7 +100,7 @@ router.patch(
  */
 router.delete(
   '/:id',
-  //requireAuth,
+  requireAuth,
   //AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   validate.deleteItem,
