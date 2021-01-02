@@ -49,6 +49,7 @@
     "trim-request": "^1.0.6",
     "uuid": "^3.3.3",
     "mongo-seeding": "^3.3.0",
+    "faker": "^4.1.0",
     "validator": "^12.1.0"
   },
   "devDependencies": {
