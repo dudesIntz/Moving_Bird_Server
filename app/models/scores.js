@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 const ResultSchema = new mongoose.Schema(
   {
-    attempts: {type:Array, default:[]}
+    attempts: { type: Array, default: [] }
   },
   {
     versionKey: false,

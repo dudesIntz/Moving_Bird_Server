@@ -27,7 +27,7 @@ exports.createItem = [
  * Validates update item request
  */
 exports.updateItem = [
-   check('_id')
+  check('_id')
     .exists()
     .withMessage('MISSING')
     .not()
@@ -39,7 +39,7 @@ exports.updateItem = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
- (req, res, next) => {
+  (req, res, next) => {
     validationResult(req, res, next)
   }
 ]

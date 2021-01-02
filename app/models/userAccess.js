@@ -21,7 +21,7 @@ const UserAccessSchema = new mongoose.Schema(
       required: true
     },
     country: {
-      type: String,
+      type: String
     }
   },
   {

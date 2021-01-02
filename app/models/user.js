@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
 const mongoosePaginate = require('mongoose-paginate-v2')
-const role = require("../middleware/role")
+const role = require('../middleware/role')
 
 const UserSchema = new mongoose.Schema(
   {

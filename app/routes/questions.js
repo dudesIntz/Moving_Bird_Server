@@ -101,7 +101,7 @@ router.patch(
 router.delete(
   '/:id',
   requireAuth,
-  //AuthController.roleAuthorization(['admin']),
+  // AuthController.roleAuthorization(['admin']),
   trimRequest.all,
   validate.deleteItem,
   controller.deleteItem

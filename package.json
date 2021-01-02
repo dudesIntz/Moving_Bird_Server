@@ -15,12 +15,7 @@
     "lint": "eslint --fix --config .eslintrc.json \"**/*.js\"",
     "remark": "remark . -o"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run remark",
-      "pre-push": "npm run test"
-    }
-  },
+ 
   "dependencies": {
     "adm-zip": "^0.4.14",
     "bcryptjs": "^2.4.3",

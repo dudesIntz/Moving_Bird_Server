@@ -106,7 +106,7 @@ exports.getProfile = async (req, res) => {
     const profile = await getProfileFromDB(id)
     res.status(200).json(profile)
   } catch (error) {
-    console.log("err", error)
+    console.log('err', error)
     utils.handleError(res, error)
   }
 }
