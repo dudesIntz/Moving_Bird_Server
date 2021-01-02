@@ -4,7 +4,7 @@
   "description": "e learning server application",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node seed.js",
+    "start": "cross-env NODE_ENV=production pm2 start server.js",
     "mocha": "nyc mocha --timeout=5000 --exit",
     "test": "npm run fresh && npm run mocha",
     "dev": "cross-env NODE_ENV=development nodemon server.js",
@@ -48,8 +48,6 @@
     "sharp": "^0.25.2",
     "trim-request": "^1.0.6",
     "uuid": "^3.3.3",
-    "mongo-seeding": "^3.3.0",
-    "faker": "^4.1.0",
     "validator": "^12.1.0"
   },
   "devDependencies": {
